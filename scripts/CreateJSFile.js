@@ -50,7 +50,7 @@ async function generarArchivoJS() {
             for (let i = 0; i < temas.length; i++) {
                 const tema = temas[i];
                 const tituloTema = tema.titulo;
-                const numAudio = i + 42;
+                const numAudio = i + 1;
                 const archivoAudio = fs.readdirSync(carpetaAudiosLibro).find((archivo) => archivo.startsWith(`${numAudio}.`));
 
                 if (archivoAudio) {

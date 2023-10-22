@@ -5,7 +5,7 @@ const { generarArchivoJS } = require('./scripts/CreateJSFile');
 
 async function azureTextToSpeech(arrayTemas, jsonFilePath) {
     if (arrayTemas && arrayTemas.temas && Array.isArray(arrayTemas.temas)) {
-        const speechConfig = SpeechConfig.fromSubscription("e5ddc1ada26247979afcafe09a57e293", "eastus");
+        const speechConfig = SpeechConfig.fromSubscription("fe6980690c2f4bd584a0bc72edf88e5b", "eastus");
         speechConfig.speechSynthesisOutputFormat = SpeechSynthesisOutputFormat.Audio24Khz160KBitRateMonoMp3;
         speechConfig.speechSynthesisVoiceName = "es-MX-JorgeNeural";
 
@@ -27,7 +27,7 @@ async function azureTextToSpeech(arrayTemas, jsonFilePath) {
         for (let i = 0; i < arrayTemas.temas.length; i++) {
             const tema = arrayTemas.temas[i];
             const text = tema.contenido;
-            const audioFileName = `${i + 42}`;
+            const audioFileName = `${i + 1}`;
 
             const audioConfig = AudioConfig.fromAudioFileOutput(path.join(folderPath, `${audioFileName}.mp3`));
             const synthesizer = new SpeechSynthesizer(speechConfig, audioConfig);
