@@ -2,6 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 const { SpeechSynthesisOutputFormat, SpeechConfig, AudioConfig, SpeechSynthesizer } = require("microsoft-cognitiveservices-speech-sdk");
 const { generarArchivoJS } = require('./scripts/CreateJSFile');
+const { run } = require('./compress');
 
 async function azureTextToSpeech(arrayTemas, jsonFilePath) {
     if (arrayTemas && arrayTemas.temas && Array.isArray(arrayTemas.temas)) {
@@ -101,6 +102,7 @@ async function main() {
 				await azureTextToSpeech(arrayTemas, jsonFilePath);
 				await generarArchivoJS();
                 console.log(`Audiolibro ${jsonFileName.replace('.json', '')} hecho!`);
+                await run();
 			} catch (error) {
 				console.error("Error al procesar el archivo JSON: ", jsonFilePath);
 				console.error(error);

@@ -48,4 +48,7 @@ async function run() {
     await processFolderAsync(folderPath);
 }
 
-run();
+module.exports = {
+    run,
+    processFolderAsync
+};
