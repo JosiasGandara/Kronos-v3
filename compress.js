@@ -1,8 +1,10 @@
-const ffmpegPath = require('ffprobe-static').path;
-const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs-extra');
 const path = require('path');
-const folderPath = './audios';
+
+const ffmpegPath = require('ffprobe-static').path;
+const ffmpeg = require('fluent-ffmpeg');
+
+const carpeta = './audios';
 
 ffmpeg.setFfprobePath(ffmpegPath);
 
@@ -43,12 +45,15 @@ async function processFolderAsync(folderPath) {
     }
 }
 
-async function run() {
+async function compress() {
     console.log("\n======================================="+"\n== Comprimiendo archivos de audio... =="+"\n=======================================");
-    await processFolderAsync(folderPath);
+    let folder = path.join(carpeta);
+    await processFolderAsync(folder);
 }
 
+compress();
+
 module.exports = {
-    run,
+    compress,
     processFolderAsync
 };

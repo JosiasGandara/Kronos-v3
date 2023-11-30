@@ -6,7 +6,11 @@ const ffmpeg = require('fluent-ffmpeg');
 const carpetaConAudios = './audios';
 const carpetaConJSON = './json';
 
-ffmpeg.setFfprobePath(ffmpegPath);
+try {
+    ffmpeg.setFfprobePath(ffmpegPath);
+} catch (err) {
+    console.error('Error al establecer la ruta de ffmpeg:', err.message);
+}
 
 function obtenerDuracionFormateada(duracionEnSegundos) {
     const minutos = String(Math.floor(duracionEnSegundos / 60)).padStart(2, '0');

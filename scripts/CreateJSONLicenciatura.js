@@ -51,44 +51,48 @@ function indice() {
 
                     if(line.contents.replace(/(\r\n|\n|\r)/gm, "") != tituloSig) {
                     
-                        if(paragraphStyle == 'Título' && !excluirBiblio.test(line.contents)) {
+                        if((paragraphStyle == 'Nombre del libro' || paragraphStyle == 'Título de unidad' || paragraphStyle == 'Título') && !excluirBiblio.test(line.contents)) {
 
                             for(var d = c; d < pages[a].textFrames[b].lines.length; d++){
                                 
                                 line = pages[a].textFrames[b].lines[d];
                                 paragraphStyle = pages[a].textFrames[b].lines[d].appliedParagraphStyle.name;
 
-                                if(paragraphStyle != 'Título') {
+                                if(paragraphStyle != 'Nombre del libro' && paragraphStyle != 'Título de unidad' && paragraphStyle != 'Título') {
                                     break;
                                 } else if (!excluirBiblio.test(line.contents)) {
 
-                                    var titulo = line.contents.replace(/(\r\n|\n|\r)/gm, "");
+                                    var titulo = line.contents.replace(/(\r\n|\n|\r|\")/gm, "");
 
-                                    if (/(U|u)nidad\sI\./gm.test(titulo)) {
-                                        titulo = titulo.replace(/I\./gm, "1.");
-                                    } else if (/(U|u)nidad\sII\./gm.test(titulo)) {
-                                        titulo = titulo.replace(/II\./gm, "2.");
-                                    } else if (/(U|u)nidad\sIII\./gm.test(titulo)) {
-                                        titulo = titulo.replace(/III\./gm, "3.");
+                                    if (/(S|s)iglo\sXXI/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XXI/gm, "21");
+                                    } else if (/(S|s)iglo\sXX/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XX/gm, "20");
+                                    } else if (/(S|s)iglo\sXIX/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XIX/gm, "19");
+                                    } else if (/(S|s)iglo\sXVIII/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XVIII/gm, "18");
+                                    } else if (/(S|s)iglo\sXVII/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XVII/gm, "17");
+                                    } else if (/(S|s)iglo\sXVI/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XVI/gm, "16");
+                                    } else if (/(S|s)iglo\sXV/gm.test(titulo)) {
+                                        titulo = titulo.replace(/XV/gm, "15");
                                     }
                                     
+                                    if(pages[a].textFrames[b].lines[d + 1].appliedParagraphStyle.name == 'Introducción de unidad' || pages[a].textFrames[b].lines[d + 1].appliedParagraphStyle.name == 'Introducción general') {
+                                        titulo += ' ' + pages[a].textFrames[b].lines[d + 2].contents;
+                                    }
+
+                                    if(paragraphStyle == 'Título' && pages[a].textFrames[b].lines[d - 1].appliedParagraphStyle.name == 'Número título') {
+                                        var numero = pages[a].textFrames[b].lines[d - 1].contents.replace(/(\r\n|\n|\r|\")/gm, "");
+                                        titulo = numero + ' ' + titulo;
+                                    }
+
                                     arregloTemp.push(titulo);
 
                                 }
         
-                                if((d == pages[a].textFrames[b].lines.length - 1) && (paragraphStyle == 'Título')) {
-
-                                    for(var i = 0; i < pages[a+1].textFrames.length; i++) {
-
-                                        if((pages[a+1].textFrames[i].lines[0].appliedParagraphStyle.name == 'Título' || pages[a+1].textFrames[i].lines[0].appliedParagraphStyle.name == 'Subtítulo indice')) {
-                                            tituloSig = pages[a+1].textFrames[i].lines[0].contents.replace(/(\r\n|\n|\r)/gm, "");
-                                            arregloTemp.push(tituloSig);
-                                            break;
-                                        }
-
-                                    }
-
-                                }
                             }
                             frameName = arregloTemp.join("");
                             c = d;
@@ -124,15 +128,15 @@ function indice() {
                 var line = pages[a].textFrames[b].lines[c];
                 var paragraphStyle = line.appliedParagraphStyle.name;
 
-                if (paragraphStyle == "Título" && line.length > 1) {
+                if ((paragraphStyle == 'Nombre del libro' || paragraphStyle == 'Título de unidad' || paragraphStyle == 'Título') && line.length > 1) {
                     if (currentTitulo !== null) {
 						currentContenido = currentContenido.replace(/\s+/g, ' ');
                         arregloContenidos.push(currentContenido);
                     }
                     currentTitulo = line.contents.replace(/(\r\n|\n|\r)/gm, "");
                     currentContenido = "";
-                } else if ((paragraphStyle == "Sumario" || paragraphStyle == "Primer Párrafo" || paragraphStyle == "Cuerpo de Texto" || paragraphStyle == "Subtítulo" || paragraphStyle == "Inciso") && line.length > 1) {
-                    currentContenido += line.contents.replace(/(\r\n|\n|\r)/gm, "") + " ";
+                } else if ((paragraphStyle == "Primer párrafo unidad" || paragraphStyle == "Cuerpo de texto" || paragraphStyle == "Lista" || paragraphStyle == "Primer párrafo después de sumario" || paragraphStyle == "Subtítulo" || paragraphStyle == "Caso de estudio / clínico" || paragraphStyle == "Sumario") && line.length > 1) {
+                    currentContenido += line.contents.replace(/(\r\n|\n|\r|\")/gm, "") + " ";
                 }
             }
         }

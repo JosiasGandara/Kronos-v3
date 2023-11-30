@@ -2,11 +2,11 @@ const fs = require("fs").promises;
 const path = require("path");
 const { SpeechSynthesisOutputFormat, SpeechConfig, AudioConfig, SpeechSynthesizer } = require("microsoft-cognitiveservices-speech-sdk");
 const { generarArchivoJS } = require('./scripts/CreateJSFile');
-const { run } = require('./compress');
 
 async function azureTextToSpeech(arrayTemas, jsonFilePath) {
+
     if (arrayTemas && arrayTemas.temas && Array.isArray(arrayTemas.temas)) {
-        const speechConfig = SpeechConfig.fromSubscription("fe6980690c2f4bd584a0bc72edf88e5b", "eastus");
+        const speechConfig = SpeechConfig.fromSubscription("bfeeac9d160b42d7b225576546e6b545", "eastus");
         speechConfig.speechSynthesisOutputFormat = SpeechSynthesisOutputFormat.Audio24Khz160KBitRateMonoMp3;
         speechConfig.speechSynthesisVoiceName = "es-MX-JorgeNeural";
 
@@ -102,7 +102,6 @@ async function main() {
 				await azureTextToSpeech(arrayTemas, jsonFilePath);
 				await generarArchivoJS();
                 console.log(`Audiolibro ${jsonFileName.replace('.json', '')} hecho!`);
-                await run();
 			} catch (error) {
 				console.error("Error al procesar el archivo JSON: ", jsonFilePath);
 				console.error(error);
